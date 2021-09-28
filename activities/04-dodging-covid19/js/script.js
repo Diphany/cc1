@@ -21,7 +21,7 @@ function preload() {
 Description of setup
 */
 function setup() {
-  createCanvas(500, 500);
+
 }
 
 
@@ -29,8 +29,5 @@ function setup() {
 Description of draw()
 */
 function draw() {
-  background(0);
 
-  // imageMODE(CENTER);
-  // image(img, 0, 0);
 }
