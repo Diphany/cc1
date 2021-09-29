@@ -26,7 +26,13 @@ let user = {
   x: 250,
   y: 250,
   size: 100,
-  fill: 255
+  fill: 255,
+  vx: 0,
+  vy: 0,
+  ax: 0,
+  ay: 0,
+  acceleration: 1,
+  maxSpeed: 10
 };
 
 let numStatic = 1000;
@@ -48,7 +54,7 @@ function setup() {
   covid19.y = random(0, height);
   covid19.vx = covid19.speed;
 
-  noCursor();
+  // noCursor();
 }
 
 
@@ -76,8 +82,27 @@ function draw() {
   }
 
   // User movement
-  user.x = mouseX;
-  user.y = mouseY;
+  if (mouseX < user.x) {
+    user.ax = -user.acceleration;
+  }
+  else {
+    user.ax = user.acceleration;
+  }
+
+  if (mouseY < user.y) {
+    user.ay = -user.acceleration;
+  }
+  else {
+    user.ay = user.acceleration;
+  }
+
+  user.vx = user.vx + user.ax;
+  user.vx = constrain(user.vx, -user.maxSpeed, user.maxSpeed);
+  user.vy = user.vy + user.ay;
+  user.vy = constrain(user.vy, -user.maxSpeed, user.maxSpeed);
+
+  user.x = user.x + user.vx;
+  user.y = user.y + user.vy;
 
   // Check for catching covid19
   let d = dist(user.x, user.y, covid19.x, covid19.y);
