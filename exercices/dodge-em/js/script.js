@@ -12,9 +12,11 @@ let covid19 = {
   x: 0,
   y: 250,
   size: 100,
+  sizeScale: 20,
+  maxScale: 400,
   vx: 0,
   vy: 0,
-  speed: 5,
+  speed: 40,
   fill: {
     r: 255,
     g: 0,
@@ -31,8 +33,8 @@ let user = {
   vy: 0,
   ax: 0,
   ay: 0,
-  acceleration: 1,
-  maxSpeed: 10
+  acceleration: 5,
+  maxSpeed: 20
 };
 
 let numStatic = 1000;
@@ -81,7 +83,7 @@ function draw() {
     covid19.y = random(0, height);
   }
 
-  // User movement
+  // User movement + acceleration effect when moving
   if (mouseX < user.x) {
     user.ax = -user.acceleration;
   }
@@ -108,6 +110,21 @@ function draw() {
   let d = dist(user.x, user.y, covid19.x, covid19.y);
   if (d < covid19.size/2 + user.size/2) {
     noLoop();
+  }
+  print(d);
+
+  /*
+    Increase covid19 size if it's getting close to the user and decrease if
+    it's getting further away from the user
+  */
+
+  if (d < covid19.x/5 + user.x/5) {
+      covid19.size = covid19.size + covid19.sizeScale;
+      covid19.size = constrain(covid19.size, 100, covid19.maxScale);
+  }
+  else {
+    covid19.size = covid19.size - covid19.sizeScale;
+    covid19.size = constrain(covid19.size, 100, covid19.maxScale);
   }
 
   // Display covid 19
