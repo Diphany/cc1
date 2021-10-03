@@ -2,8 +2,7 @@
 Looking for Love
 Diphany Chea
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
+Activity #5 - Looking for Love
 */
 
 "use strict";
@@ -26,14 +25,7 @@ let circle2 = {
   speed: 3
 };
 
-let state = 'simulation'; // Can be: title, simulation, love, sadness
-
-/**
-Description of preload
-*/
-function preload() {
-
-}
+let state = 'title'; // Can be: title, simulation, love, sadness
 
 function setup() {
   createCanvas(500, 500);
@@ -72,11 +64,38 @@ function draw() {
   }
 }
 
+function title() {
+  push();
+  textSize(64);
+  fill(200, 100, 100);
+  textAlign(CENTER, CENTER);
+  text('LOVE?', width/2, height/2);
+  pop();
+}
+
 function simulation() {
   move();
   checkOffscreen();
   checkOverlap();
   display();
+}
+
+function love() {
+  push();
+  textSize(64);
+  fill(255, 150, 150);
+  textAlign(CENTER, CENTER);
+  text('LOVE!', width/2, height/2);
+  pop();
+}
+
+function sadness() {
+  push();
+  textSize(64);
+  fill(150, 150, 255);
+  textAlign(CENTER, CENTER);
+  text(':(', width/2, height/2);
+  pop();
 }
 
 function move() {
@@ -90,8 +109,17 @@ function move() {
 
 function checkOffscreen() {
   // Check if the circles have gone offscreen
-  if (circle.x < 0 || circle1.x > width || circle.y < 0 || circle1.y > height || circle2.x > width || circle2.y < 0 || circle2.y > height) {
-    // SAD ENDING
+  if (isOffscreen(circle1) || isOffscreen(circle2)) {
+    state = 'sadness';
+  }
+}
+
+function isOffscreen(circle) {
+  if (circle.x < 0 || circle.x > width || circle.y < 0 || circle.y > height) {
+    return true;
+  }
+  else {
+    return false;
   }
 }
 
@@ -99,7 +127,7 @@ function checkOverlap() {
   // Check if the circles overlap
   let d = dist(circle1.x, circle1.y, circle2.x, circle2.y);
   if (d < circle1.size/2 + circle2.size/2) {
-    // LOVE ENDING!
+    state = 'love';
   }
 }
 
@@ -107,4 +135,10 @@ function display() {
   // Display the circles
   ellipse(circle1.x, circle1.y, circle1.size);
   ellipse(circle2.x, circle2.y, circle2.size);
+}
+
+function mousePressed() {
+  if (state === 'title') {
+    state = 'simulation';
+  }
 }
